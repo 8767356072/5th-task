@@ -1,0 +1,92 @@
+To analyze the dataset of global average sea level change since 1880 and make predictions through 2050, you can follow the steps below. This implementation uses Pandas for data manipulation, Matplotlib for plotting, and SciPy for linear regression.
+
+Step-by-Step Implementation
+
+1. Import Required Libraries
+
+
+2. Load the Data
+
+
+3. Create the Scatter Plot
+
+
+4. Calculate and Plot the Line of Best Fit
+
+
+5. Predict Sea Level Rise Through 2050
+
+
+6. Save and Return the Image
+
+
+
+Here’s the complete code:
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.stats import linregress
+
+# Step 1: Load the data
+df = pd.read_csv("epa-sea-level.csv")
+
+# Step 2: Create the scatter plot
+plt.figure(figsize=(12, 6))
+plt.scatter(df['Year'], df['CSIRO Adjusted Sea Level'], color='blue', label='Observed Data')
+
+# Step 3: Calculate the line of best fit for all data
+slope, intercept, r_value, p_value, std_err = linregress(df['Year'], df['CSIRO Adjusted Sea Level'])
+years_extended = pd.Series(range(1880, 2051))
+predicted_levels = slope * years_extended + intercept
+plt.plot(years_extended, predicted_levels, color='red', label='Best Fit Line (1880-2050)')
+
+# Step 4: Calculate the line of best fit for data from 2000 onwards
+df_recent = df[df['Year'] >= 2000]
+slope_recent, intercept_recent, r_value_recent, p_value_recent, std_err_recent = linregress(df_recent['Year'], df_recent['CSIRO Adjusted Sea Level'])
+predicted_levels_recent = slope_recent * years_extended + intercept_recent
+plt.plot(years_extended, predicted_levels_recent, color='green', label='Best Fit Line (2000-2050)')
+
+# Step 5: Customize the plot
+plt.title('Rise in Sea Level')
+plt.xlabel('Year')
+plt.ylabel('Sea Level (inches)')
+plt.legend()
+plt.grid(visible=True)
+plt.tight_layout()
+
+# Save and show the plot
+plt.savefig('sea_level_rise.png')
+plt.show()
+
+Explanation of Each Step:
+
+1. Import Libraries: The necessary libraries (pandas, matplotlib, and scipy.stats) are imported.
+
+
+2. Load the Data: The CSV file containing sea level data is read into a DataFrame.
+
+
+3. Create Scatter Plot: A scatter plot is created with the Year on the x-axis and the CSIRO Adjusted Sea Level on the y-axis.
+
+
+4. Calculate and Plot Line of Best Fit:
+
+The slope and intercept of the line of best fit are calculated using the linregress function.
+
+The line is extended to the year 2050 to show predicted sea level rise.
+
+A second line of best fit is calculated using data from the year 2000 onward, also extended to 2050.
+
+
+
+5. Customize Plot: The plot is customized with titles and labels, and a legend is added.
+
+
+6. Save and Show the Plot: The final plot is saved as a PNG file and displayed.
+
+
+
+Running the Code
+
+Make sure to have the dataset epa-sea-level.csv in the same directory as your script or provide the correct path to it. Running the script will generate and display the scatter plot along with the lines of best fit, including predictions for 2050.
+
